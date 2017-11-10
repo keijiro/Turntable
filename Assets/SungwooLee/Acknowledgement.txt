@@ -1,0 +1,21 @@
+The texture files in this directory were created by Sungwoo Lee and distributed
+as parts of “Free PBR texture Vol.01”. See the pages below for further details.
+
+- http://polycount.com/discussion/160452/ue4-free-pbr-texture-vol-01
+- https://gumroad.com/l/HEZvu
+
+The text below is from the original readme file.
+
+----
+
+Hey there,these textures are free to use in any project.
+
+Please do not resell these item directly.
+
+More information about me please visit 
+
+https://www.artstation.com/artist/leesungwoo
+
+Have a nice day.
+
+-Lee
