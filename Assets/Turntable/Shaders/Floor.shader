@@ -2,8 +2,9 @@
 {
     Properties
     {
+        [HDR] _Color("Color", Color) = (1, 1, 1, 1)
+
         [Header(Rings)]
-        [HDR] _RingColor("Color", Color) = (1, 1, 1, 1)
         _RingWidth("Width", Float) = 0.1
         _RingFreq("Frequency", Float) = 4
         _RingSpeed("Animation Speed", Float) = 1
@@ -14,7 +15,8 @@
     #include "UnityCG.cginc"
     #include "SimplexNoise2D.hlsl"
 
-    float4 _RingColor;
+    float4 _Color;
+
     float _RingWidth;
     float _RingFreq;
     float _RingSpeed;
@@ -22,11 +24,10 @@
     float Rings(float2 p, float t)
     {
         float l = length(p);
-        float pt = snoise(float2(l * _RingFreq, t * _RingSpeed));
-        float br = smoothstep(-_RingWidth, 0, pt);
-        br *= smoothstep(0, _RingWidth, _RingWidth - pt);
-        br *= 1 - smoothstep(0.95, 1, l);
-        return br;
+        float n = snoise(float2(l * _RingFreq, t * _RingSpeed));
+        float y = smoothstep(-_RingWidth, 0, n);
+        y *= smoothstep(0, _RingWidth, _RingWidth - n);
+        return y * (1 - smoothstep(0.95, 1, l));
     }
 
     float2 Vertex(
@@ -41,6 +42,8 @@
 
     half4 Fragment(float2 uv : TEXCOORD) : SV_Target
     {
+        // Antialiasing with multi-point sampling
+
         float2 duv_dx = ddx(uv);
         float2 duv_dy = ddy(uv);
 
@@ -48,7 +51,9 @@
 
         duv_dx /= fw.x;
         duv_dy /= fw.y;
-        uv -= duv_dx * fw.x / 2 + duv_dy * fw.y / 2;
+
+        uv += duv_dx / 2;
+        uv += duv_dy / 2;
 
         float o = 0;
 
@@ -61,7 +66,7 @@
             }
         }
 
-        return _RingColor * o / (fw.x * fw.y);
+        return _Color * o / (fw.x * fw.y);
     }
 
     ENDCG

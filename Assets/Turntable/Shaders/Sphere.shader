@@ -23,30 +23,32 @@
     float _NoiseAmp;
     float _NoiseBias;
 
-    // Vertex input attributes
     struct Attributes
     {
         float4 position : POSITION;
     };
 
-    // Fragment varyings
     struct Varyings
     {
         float4 position : SV_POSITION;
-        half4 color : COLOR;
+        half intensity : COLOR;
     };
 
-    // Vertex stage
-    void Vertex(inout float4 position : POSITION)
+    void Vertex(inout float4 position : POSITION) {}
+
+    Varyings GeometryOut(float3 position, half intensity)
     {
-        position = mul(unity_ObjectToWorld, position);
+        Varyings o;
+        o.position = UnityObjectToClipPos(float4(position, 1));
+        o.intensity = intensity;
+        return o;
     }
 
-    [maxvertexcount(3)]
+    [maxvertexcount(6)]
     void Geometry
     (
         triangle float4 input[3] : POSITION,
-        inout TriangleStream<Varyings> outStream
+        inout LineStream<Varyings> outStream
     )
     {
         float3 p0 = input[0].xyz;
@@ -61,24 +63,22 @@
         p1 = lerp(c, p1, ns);
         p2 = lerp(c, p2, ns);
 
-        Varyings o;
-        o.color = _Color;
+        // Triangle
+        outStream.Append(GeometryOut(p0, 1));
+        outStream.Append(GeometryOut(p1, 1));
+        outStream.Append(GeometryOut(p2, 1));
+        outStream.Append(GeometryOut(p0, 1));
+        outStream.RestartStrip();
 
-        o.position = UnityWorldToClipPos(float4(p0, 1));
-        outStream.Append(o);
-
-        o.position = UnityWorldToClipPos(float4(p1, 1));
-        outStream.Append(o);
-
-        o.position = UnityWorldToClipPos(float4(p2, 1));
-        outStream.Append(o);
-
+        // Line
+        outStream.Append(GeometryOut(lerp(c, 0, ns * 0.7), 0));
+        outStream.Append(GeometryOut(lerp(0, c, 1 + 0.2 * ns), ns / 2));
         outStream.RestartStrip();
     }
 
     half4 Fragment(Varyings input) : SV_Target
     {
-        return input.color;
+        return _Color * input.intensity;
     }
 
     ENDCG
