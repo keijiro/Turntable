@@ -6,5 +6,5 @@ save storage and bandwidth.
 
 These files are available in the repositories below.
 
-https://github.com/keijiro/PostProcessing
-https://github.com/keijiro/ThreeDScans
+- https://github.com/keijiro/PostProcessing
+- https://github.com/keijiro/ThreeDScans
