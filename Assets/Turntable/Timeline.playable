@@ -116,6 +116,28 @@ AnimationClip:
     path: Sphere Fx
     classID: 23
     script: {fileID: 0}
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 2
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 1
+        tangentMode: 69
+      - serializedVersion: 2
+        time: 20
+        value: 20
+        inSlope: 1
+        outSlope: 0
+        tangentMode: 69
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    attribute: material._LocalTime
+    path: Wall Fx
+    classID: 23
+    script: {fileID: 0}
   m_PPtrCurves: []
   m_SampleRate: 60
   m_WrapMode: 0
@@ -147,6 +169,13 @@ AnimationClip:
       isPPtrCurve: 0
     - serializedVersion: 2
       path: 2931590933
+      attribute: 2167279387
+      script: {fileID: 0}
+      typeID: 23
+      customType: 22
+      isPPtrCurve: 0
+    - serializedVersion: 2
+      path: 1429492002
       attribute: 2167279387
       script: {fileID: 0}
       typeID: 23
@@ -325,6 +354,28 @@ AnimationClip:
     attribute: localEulerAnglesRaw.z
     path: Sphere Fx
     classID: 4
+    script: {fileID: 0}
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 2
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 1
+        tangentMode: 69
+      - serializedVersion: 2
+        time: 20
+        value: 20
+        inSlope: 1
+        outSlope: 0
+        tangentMode: 69
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    attribute: material._LocalTime
+    path: Wall Fx
+    classID: 23
     script: {fileID: 0}
   m_EulerEditorCurves:
   - curve:
