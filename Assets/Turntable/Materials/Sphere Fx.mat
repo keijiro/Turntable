@@ -62,6 +62,7 @@ Material:
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
+    - _LocalTime: 20
     - _Metallic: 0
     - _Mode: 0
     - _NoiseAmp: 1.5
@@ -73,6 +74,7 @@ Material:
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _UVSec: 0
+    - _UseSystemTime: 0
     - _ZWrite: 1
     m_Colors:
     - _Color: {r: 1.2205881, g: 1.9032459, b: 2, a: 1}

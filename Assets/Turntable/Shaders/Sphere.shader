@@ -9,6 +9,10 @@
         _NoiseMotion("Motion", Vector) = (0, 0, 1, 0)
         _NoiseAmp("Amplitude", Float) = 1
         _NoiseBias("Bias", Float) = 0
+
+        [Header(Animation)]
+        [Toggle(_USE_SYSTEM_TIME)] _UseSystemTime("Use System Time", Int) = 1
+        _LocalTime("Material Time", Float) = 0
     }
 
     CGINCLUDE
@@ -22,6 +26,7 @@
     float3 _NoiseMotion;
     float _NoiseAmp;
     float _NoiseBias;
+    float _LocalTime;
 
     struct Attributes
     {
@@ -51,12 +56,18 @@
         inout LineStream<Varyings> outStream
     )
     {
+    #if _USE_SYSTEM_TIME
+        float t = _Time.y;
+    #else
+        float t = _LocalTime;
+    #endif
+
         float3 p0 = input[0].xyz;
         float3 p1 = input[1].xyz;
         float3 p2 = input[2].xyz;
 
         float3 c = (p0 + p1 + p2) / 3;
-        float ns = snoise(c * _NoiseFreq + _NoiseMotion * _Time.y);
+        float ns = snoise(c * _NoiseFreq + _NoiseMotion * t);
         ns = saturate(_NoiseBias + ns * _NoiseAmp);
 
         p0 = lerp(c, p0, ns);
@@ -94,6 +105,7 @@
             #pragma vertex Vertex
             #pragma geometry Geometry
             #pragma fragment Fragment
+            #pragma shader_feature _USE_SYSTEM_TIME
             ENDCG
         }
     }

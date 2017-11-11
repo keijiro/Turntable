@@ -8,6 +8,10 @@
         _RingWidth("Width", Float) = 0.1
         _RingFreq("Frequency", Float) = 4
         _RingSpeed("Animation Speed", Float) = 1
+
+        [Header(Animation)]
+        [Toggle(_USE_SYSTEM_TIME)] _UseSystemTime("Use System Time", Int) = 1
+        _LocalTime("Material Time", Float) = 0
     }
 
     CGINCLUDE
@@ -20,6 +24,7 @@
     float _RingWidth;
     float _RingFreq;
     float _RingSpeed;
+    float _LocalTime;
 
     float Rings(float2 p, float t)
     {
@@ -42,6 +47,12 @@
 
     half4 Fragment(float2 uv : TEXCOORD) : SV_Target
     {
+    #if _USE_SYSTEM_TIME
+        float t = _Time.y;
+    #else
+        float t = _LocalTime;
+    #endif
+
         // Antialiasing with multi-point sampling
 
         float2 duv_dx = ddx(uv);
@@ -62,7 +73,7 @@
             UNITY_LOOP for (uint ix = 0; ix < fw.x; ix++)
             {
                 float2 uv2 = uv + duv_dx * ix + duv_dy * iy;
-                o += Rings(uv2 * 2 - 1, _Time.y);
+                o += Rings(uv2 * 2 - 1, t);
             }
         }
 
@@ -81,6 +92,7 @@
             CGPROGRAM
             #pragma vertex Vertex
             #pragma fragment Fragment
+            #pragma shader_feature _USE_SYSTEM_TIME
             ENDCG
         }
     }
